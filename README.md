@@ -70,7 +70,7 @@ food-del/
 
 ⚡ Installation & Setup
 1️⃣ Clone Repository
-git clone https://github.com/umbraobi/umbra-food-del.git
+git clone https://github.com/umbraobi/umbra-food-delivery.git
 cd food-del
 
 2️⃣ Backend Setup
