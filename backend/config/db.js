@@ -3,8 +3,8 @@ import orderModel from "../models/orderModel.js"; // import here
 
 export const connectDb = async () => {
   await mongoose
-    .connect(
-      "mongodb+srv://umbraobi:Umbra2984@cluster0.brgwbvu.mongodb.net/food-del"
+   .connect(
+     process.env.MONGO_URI
     )
     .then(async () => {
       console.log("✅ DB Connected");
