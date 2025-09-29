@@ -4,7 +4,7 @@ export const StoreContext = createContext(null);
 import axios from "axios";
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
-  const url = "https://umbra-food-delivery-backend.onrender.com/";
+  const url = "https://umbra-food-delivery-backend.onrender.com";
   const [token, setToken] = useState("");
   const [food_list, setFoodList] = useState([]);
 
