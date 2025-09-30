@@ -4,9 +4,6 @@ A full-stack MERN food delivery web application with ordering, payment integrati
 
 🚀 [**Live Demo (Frontend)**] ( https://umbra-food-delivery-frontend.onrender.com )
 
-
-🛠️ [**Live Demo (Admin Dashboard)**] ( https://umbra-fooddel-admin.onrender.com )
-
 🚀 Features
 👤 User Side (Frontend)
 
