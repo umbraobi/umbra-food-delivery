@@ -1,217 +1,161 @@
-🍔 Food-Del — MERN Food Delivery Web App
+# 🍔 Umbra Food Delivery (MERN)
 
-A full-stack MERN food delivery web application with ordering, payment integration, and an admin CRUD system for managing menu items and tracking orders.
+Full-stack food delivery web application with a React user app, React admin dashboard, and an Express + MongoDB backend. Features ordering, Stripe payments, JWT auth, and an admin CRUD for menu items and orders.
 
-🚀 Features
-👤 User Side (Frontend)
+## ⚡ Highlights
 
-Browse food items by categories
+- User-facing React app (frontend) with cart, checkout and order history
+- Admin React dashboard (admin) to manage food items and update orders
+- Backend REST API (backend) using Express + Mongoose
+- Stripe Checkout integration for payments
 
-Add/remove items from cart
+## Project structure
 
-Place orders with delivery address
+```
+admin/      # React admin dashboard
+backend/    # Express API server
+frontend/   # React user-facing app
+README.md   # This file
+```
 
-Stripe integration for secure payments 💳
+High level responsibilities
 
-Track order status (Pending → Out for delivery → Delivered)
+- `backend/` — API, auth, database models, Stripe integration
+- `frontend/` — user app (Home, Cart, PlaceOrder, MyOrders)
+- `admin/` — admin dashboard (Add food, List foods, Orders)
 
-User authentication & order history
+## Quick start
 
-🛠️ Admin Side (Dashboard)
+Requirements: Node.js (16+ recommended), npm, a MongoDB database, Stripe account (for payments).
 
-Add new food items with image,price & category
+1. Clone
 
-Update or delete food items (CRUD)
+```powershell
+git clone https://github.com/umbraobi/umbra-food-delivery.git
+cd umbra-food-delivery
+```
 
-View all user orders
+2. Backend
 
-Update order status dynamically
-
-⚙️ Backend (API)
-
-RESTful API with Express
-
-MongoDB with Mongoose models
-
-JWT-based authentication
-
-Stripe Checkout Session for payments
-
-📂 Project Structure
-food-del/
-│
-├── admin/ # React admin dashboard
-│ ├── src/
-│ │ ├── assets/ # Admin-specific icons/images
-│ │ ├── components/ # Dashboard UI components
-│ │ ├── pages/ # Admin pages (Orders, Add Food, Manage Food)
-│ │ └── App.jsx # Admin entry point
-│ └── package.json
-│
-├── backend/ # Node.js + Express backend
-│ ├── config/ # Configuration files
-│ │ └── db.js # MongoDB connection setup
-│ ├── controllers/ # Order, food, user controllers
-│ ├── models/ # Mongoose schemas
-│ ├── routes/ # Express routes
-│ ├── middleware/ # JWT auth middleware
-│ └── server.js # Backend entry point
-│
-├── frontend/ # React user-facing app
-│ ├── src/
-│ │ ├── assets/ # Images & icons
-│ │ ├── components/ # Reusable UI components
-│ │ ├── context/ # Global state (Cart, Auth, etc.)
-│ │ ├── pages/ # Pages (Home, Cart, Orders, Profile, etc.)
-│ │ └── App.jsx # User app entry point
-│ └── package.json
-│
-└── README.md
-
-⚡ Installation & Setup
-1️⃣ Clone Repository
-git clone https://github.com/umbraobi/umbra-food-del.git
-cd food-del
-
-2️⃣ Backend Setup
+```powershell
 cd backend
 npm install
+```
 
-Create .env file in backend/ and add:
+Create a `.env` file in `backend/` with these variables:
 
+```
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 STRIPE_SECRET_KEY=your_stripe_secret_key
 PORT=4000
+```
 
-Run backend server:
+Start the backend (uses nodemon):
 
+```powershell
 npm run server
+```
 
-3️⃣ Frontend Setup
-cd frontend
+3. Frontend (user app)
+
+```powershell
+cd ../frontend
 npm install
 npm run dev
+```
 
-4️⃣ Admin Setup
-cd admin
+Open the URL shown by Vite (commonly http://localhost:5173).
+
+4. Admin dashboard
+
+```powershell
+cd ../admin
 npm install
 npm run dev
+```
 
-🔑 Sample Config (backend/config/db.js)
-import mongoose from "mongoose";
+Open the admin app URL shown by Vite.
 
-const connectDB = async () => {
-try {
-await mongoose.connect(process.env.MONGO_URI, {
-useNewUrlParser: true,
-useUnifiedTopology: true,
-});
-console.log("✅ MongoDB connected");
-} catch (error) {
-console.error("❌ MongoDB connection failed:", error.message);
-process.exit(1);
-}
-};
+## Screenshots
 
-export default connectDB;
+Add screenshots to `docs/screenshots/` (create the folder if it doesn't exist). Example files used here:
 
-🛣️ API Endpoints
-User
+- `docs/screenshots/home-hero.png` — hero section
+- `docs/screenshots/menu-cards.png` — menu / cards section
 
-POST /api/order/place → Place new order
+You can copy the two images you attached into that folder. To embed them in GitHub, they should be committed to the repo. Example Markdown to include an image:
 
-POST /api/order/verify → Verify payment
+```markdown
+![Home hero](docs/screenshots/home-hero.png)
+![Menu cards](docs/screenshots/menu-cards.png)
+```
 
-POST /api/order/userorders → Get user’s orders
+## Available scripts
 
-GET /api/order/list → List all orders (admin)
+- backend: `npm run server` (runs `nodemon server.js`)
+- frontend: `npm run dev` (Vite dev server)
+- admin: `npm run dev` (Vite dev server)
 
-Admin
+## Configuration
 
-POST /api/food/add → Add new food item
+Backend expects these env vars (in `backend/.env`):
 
-POST /api/food/remove → Remove food item
+- `MONGO_URI` — MongoDB connection string
+- `JWT_SECRET` — secret for signing JWTs
+- `STRIPE_SECRET_KEY` — Stripe secret key for creating Checkout Sessions
+- `PORT` — backend port (default 4000)
 
-GET /api/food/list → Get all foods
+If you don't want to use Stripe while developing, mock or stub payment-related calls in the backend controllers.
 
-POST /api/order/status → Update order status
+## API overview
 
-🔄 Step-by-Step Usage Flow
+Note: This is a high-level summary. Inspect `backend/routes` and `backend/controllers` for exact request/response shapes.
 
-Here’s how the system works from User → Admin → User:
+User endpoints (examples):
 
-User Browses Menu
+- POST /api/order/place — create an order and start Stripe checkout session
+- POST /api/order/verify — webhook/endpoint to confirm payment and finalize order
+- POST /api/order/userorders — returns orders for authenticated user
 
-User opens the frontend and views available food items (fetched from backend).
+Admin endpoints (examples):
 
-User Adds to Cart
+- GET /api/food/list — list all food items
+- POST /api/food/add — add a food item (admin)
+- POST /api/food/remove — remove a food item (admin)
+- GET /api/order/list — list all orders (admin)
+- POST /api/order/status — update order status
 
-Items are added to cart using Context API for state management.
+Authentication: protected endpoints use JWT. See `backend/middleware/auth.js`.
 
-User Places Order
+## Development notes
 
-At checkout, the order details (items, amount, address) are sent to backend (/api/order/place).
+- The frontend and admin apps use React + Vite. They run on separate dev servers and communicate with the backend API via Axios.
+- File uploads (food images) use `multer` in the backend and are stored under `backend/uploads`.
+- MongoDB models are in `backend/models`.
 
-Stripe Checkout session is created.
+## Testing & Linting
 
-User Pays
+- Frontend and admin include ESLint configs; run `npm run lint` in the respective folders.
 
-Stripe opens a secure payment page.
+## Troubleshooting
 
-On success → user redirected with success=true
+- If the backend can't connect to MongoDB, verify `MONGO_URI` and that your MongoDB instance accepts connections.
+- If Stripe payments fail, check `STRIPE_SECRET_KEY` and ensure webhook/redirect URLs are configured if using Checkout webhooks.
 
-On failure → user redirected with success=false.
+## Future improvements
 
-Backend Verifies Payment
+- Add alternative payment providers (Paystack)
+- Add driver/delivery partner app
+- Push notifications for order updates
+- Search filters
+ - Add social login (Google Sign-In) so users can create accounts using their Google account. (Currently users register with email, password and name.)
 
-/api/order/verify updates the order in DB as payment: true or deletes if payment failed.
 
-Admin Dashboard Shows Order
+## License
 
-Admin logs into admin app.
+MIT
 
-Views list of all orders (/api/order/list).
+## Author
 
-Can update order status: Pending → Out for delivery → Delivered.
-
-User Tracks Status
-
-User checks My Orders page.
-
-Status updates dynamically when Admin changes it.
-
-🖥️ Tech Stack
-
-Frontend: React, Context API, Axios
-
-Admin: React (separate dashboard app)
-
-Backend: Node.js, Express
-
-Database: MongoDB + Mongoose
-
-Payments: Stripe Checkout
-
-Auth: JWT
-
-🚀 Future Improvements
-
-Add Paystack as alternative to Stripe
-
-Add Delivery Partner app (driver view)
-
-Push notifications on order updates
-
-Product search and filtering
-
-Dark mode support
-
-License
-
-This project is licensed under the MIT License.
-You are free to use, modify, and distribute with attribution.
-
-👨‍💻 Author
-
-Developed by UMBRA OBI ✨
+Developed by UMBRA OBI
