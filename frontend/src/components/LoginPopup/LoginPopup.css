@@ -51,6 +51,7 @@
   color: white;
   background-color: tomato;
   font-size: 15px;
+  cursor: pointer;
 }
 
 .login-popup-condition {
@@ -67,6 +68,56 @@
   font-weight: 300;
   cursor: pointer;
 }
-button {
-  cursor: pointer;
+.dot-flashing {
+  display: inline-block;
+  margin-left: 4px;
+  position: relative;
+  width: 10px;
+  height: 10px;
+}
+
+.dot-flashing::before,
+.dot-flashing::after,
+.dot-flashing {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #fff;
+  animation: dotFlashing 1s infinite linear alternate;
+}
+
+.dot-flashing::before {
+  left: -8px;
+  animation-delay: 0s;
+}
+
+.dot-flashing {
+  left: 0;
+  animation-delay: 0.2s;
+}
+
+.dot-flashing::after {
+  left: 8px;
+  animation-delay: 0.4s;
+}
+
+@keyframes dotFlashing {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+@media (max-width: 576px) {
+  .login-popup-container {
+    width: 75vw;
+  }
 }

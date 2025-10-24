@@ -3,7 +3,11 @@ import "./PlaceOrder.css";
 import { StoreContext } from "../../context/StoreContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 const PlaceOrder = () => {
+
+
+  const [loading, setLoading] = useState(false);
   const { getTotalCartAmount, token, food_list, cartItems, url } =
     useContext(StoreContext);
   const [data, setData] = useState({
@@ -26,6 +30,8 @@ const PlaceOrder = () => {
 
   const placeOrder = async (event) => {
     event.preventDefault();
+    setLoading(true);
+    toast.success("Redirecting to stripe...");
     console.log("➡️ placeOrder triggered");
     let orderItems = [];
     food_list.map((item) => {
@@ -47,7 +53,8 @@ const PlaceOrder = () => {
       const { session_url } = response.data;
       window.location.replace(session_url);
     } else {
-      alert("Error");
+      toast.error("Error placing order. Please try again.");
+
     }
   };
 
@@ -166,7 +173,7 @@ const PlaceOrder = () => {
               </b>
             </div>
           </div>
-          <button type="submit">PROCEED TO PAYMENT</button>
+          <button type="submit" className={loading ? "loading-btn" : ""} disabled={loading}>{loading ? " Redirecting..." : " PROCEED TO PAYMENT"}</button>
         </div>
       </div>
     </form>

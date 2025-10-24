@@ -3,11 +3,12 @@ import "./LoginPopup.css";
 import { assets } from "../../assets/assets";
 import { StoreContext } from "../../context/StoreContext";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 const LoginPopup = ({ setShowLogin }) => {
   const { url, setToken } = useContext(StoreContext);
 
   const [currState, setCurrState] = useState("Login");
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -22,21 +23,36 @@ const LoginPopup = ({ setShowLogin }) => {
 
   const onLogin = async (event) => {
     event.preventDefault();
+    setLoading(true);
     let newUrl = url;
     if (currState === "Login") {
       newUrl += "/api/user/login";
     } else {
       newUrl += "/api/user/register";
     }
+    try {
 
-    const response = await axios.post(newUrl, data);
-    if (response.data.success) {
-      setToken(response.data.token);
-      localStorage.setItem("token", response.data.token);
-      setShowLogin(false);
-    } else {
-      alert(response.data.message);
+      const response = await axios.post(newUrl, data);
+      if (response.data.success) {
+        setToken(response.data.token);
+        localStorage.setItem("token", response.data.token);
+        setShowLogin(false);
+
+        toast.success(
+          currState === "Login"
+            ? "Login successful! "
+            : "Account created successfully! "
+        );
+      } else {
+        toast.error(response.data.message);
+
+      }
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false); // ✅ hide loading
     }
+
   };
 
   return (
@@ -81,8 +97,15 @@ const LoginPopup = ({ setShowLogin }) => {
             required
           />
         </div>
-        <button type="submit">
-          {currState === "Sign up" ? "Create account" : "Login"}
+
+        <button type="submit" disabled={loading}>
+          {loading
+            ? currState === "Login"
+              ? "Logging in..."
+              : "Creating..."
+            : currState === "Sign up"
+              ? "Create account"
+              : "Login"}
         </button>
         <div className="login-popup-condition">
           <input type="checkbox" required />

@@ -36,3 +36,28 @@
 .place-order .cart-total button {
   margin-top: 30px;
 }
+
+button.loading-btn {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transition: opacity 0.3s ease;
+}
+
+@media (max-width: 576px) {
+  .place-order {
+    flex-direction: column;
+    margin-top: 50px;
+  }
+  .place-order-left .title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  .place-order-left,
+  .place-order-right {
+    max-width: 100%;
+  }
+  .place-order-left input {
+    width: 93%;
+  }
+}

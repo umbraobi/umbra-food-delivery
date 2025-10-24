@@ -15,9 +15,27 @@ const MyOrders = () => {
     );
     setData(response.data.data);
   };
+
+  const updateOrderStatus = async (orderId, newStatus) => {
+    try {
+      const response = await axios.post(
+        `${url}/api/order/status`,
+        { orderId, status: newStatus },
+        { headers: { token } }
+      );
+
+      if (response.data.success) {
+        await fetchOrders(); // refresh orders right after updating
+      }
+    } catch (err) {
+      console.error("updateOrderStatus error:", err);
+    }
+  };
+
   useEffect(() => {
     if (token) {
       fetchOrders();
+
     }
   }, [token]);
 
@@ -44,11 +62,12 @@ const MyOrders = () => {
                 <span>&#x25cf;</span>
                 <b>{order.status}</b>
               </p>
-              <button onClick={fetchOrders()}>Track Order</button>
+              <button onClick={() => updateOrderStatus()}>Track Order</button>
             </div>
           );
         })}
       </div>
+
     </div>
   );
 };
