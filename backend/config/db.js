@@ -21,7 +21,7 @@ export const connectDb = async () => {
         console.error("Startup cleanup error:", err);
       }
 
-      //  Keep cleaning every 10 seconds
+      //  Keep cleaning every 60 seconds
       setInterval(async () => {
         try {
           const res = await orderModel.deleteMany({ payment: false });
@@ -33,6 +33,6 @@ export const connectDb = async () => {
         } catch (err) {
           console.error("Interval cleanup error:", err);
         }
-      }, 10 * 1000); // every 10 secs
+      }, 60 * 1000); // every 10 secs
     });
 };
